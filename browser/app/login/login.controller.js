@@ -9,11 +9,4 @@ app.controller('LoginCtrl', function ($scope, AuthFactory, $state, $log) {
 		})
 		.catch($log);
 	}
-
-	$scope.logout = function () {
-		AuthFactory.logout()
-		.then(function() {
-			$state.go('home');
-		})
-	}
 })

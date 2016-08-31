@@ -1,6 +1,6 @@
 'use strict';
 
-app.directive('contenteditable', function () {
+app.directive('contenteditable', function (AuthFactory) {
   return {
     restrict: 'A',
     require: '?ngModel',
@@ -15,6 +15,9 @@ app.directive('contenteditable', function () {
       element.bind('blur keyup change', function () {
         scope.$apply(read);
       });
+      scope.canEdit = function(authorId) {
+        return ((AuthFactory.currUser.id === authorId) || AuthFactory.currUser.isAdmin);
+      }
     }
   };
 });

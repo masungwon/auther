@@ -28,7 +28,7 @@
         <li>
           <span
             class="large-font"
-            contenteditable
+            contenteditable="{{ canEdit(newStory.author_id) }}"
             ng-model="newStory.title"
             placeholder="Story Title">
           </span>

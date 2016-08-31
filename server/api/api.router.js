@@ -4,7 +4,6 @@ var router = require('express').Router();
 var User = require('./users/user.model.js');
 
 router.post('/login', function (req, res, next) {
-  console.log('req.body', req.body);
   User.findOne({ 
     where: req.body
   })
@@ -13,7 +12,8 @@ router.post('/login', function (req, res, next) {
       res.sendStatus(401);
     } else {
       req.session.userId = user.id;
-      res.sendStatus(204);
+      //res.status(204);
+      res.json(user.dataValues);
     }
   })
   .catch(next);
@@ -21,6 +21,21 @@ router.post('/login', function (req, res, next) {
 
 router.delete('/logout', function (req, res, next) {
   req.session.destroy();
+  res.sendStatus(204);
+})
+
+
+router.get('/auth/me', function (req, res, next) {
+  console.log("in router");
+  User.findById(req.session.userId) //findById just takes in Id, NOT where
+  .then(function (user) {
+    console.log("found by id! user is ", user);
+    if (!user) { res.json(null); }
+    else { 
+      res.json(user.data);
+    }
+  })
+  .catch(next);
 })
 
 router.use('/users', require('./users/user.router'));
